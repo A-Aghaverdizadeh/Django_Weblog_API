@@ -12,7 +12,7 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError(_('you must set email'))
         
-        email = self.normalize_email('email')
+        email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save()
@@ -37,12 +37,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         Custome user for blog app
     """
 
-    email = models.EmailField(max_length=255, unique=True)
+    email = models.EmailField(_("email address"), unique=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     # is_verified = models.BooleanField(default=False)
-    first_name = models.CharField(max_length=255)
+    # first_name = models.CharField(max_length=255)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -54,3 +54,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class Profile(models.Model):
+    user = models.ForeignKey(User, models.CASCADE)
+    image = models.ImageField(upload_to='profile', null=True, blank=True)
+    first_name = models.CharField(max_length=264)
+    last_name = models.CharField(max_length=264)
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.user.email
+    
