@@ -1,7 +1,7 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 
-User = get_user_model()
+# User = get_user_model()
 
 class Post(models.Model):
     """
@@ -9,7 +9,7 @@ class Post(models.Model):
     """
 
     image = models.ImageField(null=True, blank=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
+    author = models.ForeignKey("accounts.profile", on_delete=models.CASCADE, related_name='author')
     title = models.CharField(max_length=255)
     content = models.TextField()
     status = models.BooleanField()
