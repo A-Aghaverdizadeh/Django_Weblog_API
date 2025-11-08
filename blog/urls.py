@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import BlogView, RedirectToFlexi, PostListView, PostDetailView, PostFormView, PostCreateView, PostEditView, PostDeleteView
 
 app_name = 'blog'
@@ -12,4 +12,5 @@ urlpatterns = [
     path('post-edit/<int:pk>/', PostEditView.as_view(), name='edit-post'),
     path('post-delete/<int:pk>/', PostDeleteView.as_view(), name='post-delete'),
     path('flexi', RedirectToFlexi.as_view(), name='go-to-flexi'),
+    path('api/v1/', include('blog.api.blog.urls')),
 ]
