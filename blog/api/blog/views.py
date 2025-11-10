@@ -42,6 +42,7 @@ def post_detail(request, pk):
         post.delete()
         return Response({'detail': 'the post deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 """
+
 '''
 class PostList(APIView):
     """
@@ -138,7 +139,6 @@ class PostDetail(RetrieveUpdateDestroyAPIView):
         post = get_object_or_404(Post, id=pk, status=True)
         post.delete()
         return Response({"detail": f"post {pk} is deleted successfully"})'''
-
 
 class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
