@@ -1,0 +1,19 @@
+from django.urls import path
+from .. import views
+
+urlpatterns = [
+    # registration
+    path('registration/', views.RegistrationApiView.as_view(), name='registration'),
+    ## changepassword
+    path('change-password/', views.PasswordRestAPIView.as_view(), name='change_password'),
+    ## resetpassword
+
+    # token
+    path('token-login/', views.CustomObtainAuthToken.as_view(), name="token-login"),
+    path('token-logout/', views.CustomDiscartAuthToken.as_view(), name="token-logout"),
+    # JWT
+
+    # email sending
+    path('test-email', views.TestAPIEmailSend.as_view(), name='test-email'),
+]
+

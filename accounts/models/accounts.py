@@ -25,6 +25,7 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_verified', True)
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError(_('super user most have is_staff=True'))
@@ -41,8 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-    # is_verified = models.BooleanField(default=False)
-    # first_name = models.CharField(max_length=255)
+    is_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -55,13 +55,3 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-class Profile(models.Model):
-    user = models.ForeignKey(User, models.CASCADE)
-    image = models.ImageField(upload_to='profile', null=True, blank=True)
-    first_name = models.CharField(max_length=264)
-    last_name = models.CharField(max_length=264)
-    description = models.TextField(null=True, blank=True)
-
-    def __str__(self):
-        return self.user.email
-    
