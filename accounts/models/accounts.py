@@ -1,41 +1,45 @@
 from django.db import models
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager, PermissionsMixin
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
 )
 from django.utils.translation import gettext_lazy as _
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields):
         """
-            creating user with given email & password
+        creating user with given email & password
         """
         if not email:
-            raise ValueError(_('you must set email'))
-        
+            raise ValueError(_("you must set email"))
+
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save()
         return user
-    
+
     def create_superuser(self, email, password, **extra_fields):
         """
-            create super user with given email & password
+        create super user with given email & password
         """
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_active', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_verified', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_verified", True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError(_('super user most have is_staff=True'))
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError(_('superuser most have is_superuser=True'))
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError(_("super user most have is_staff=True"))
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError(_("superuser most have is_superuser=True"))
         return self.create_user(email, password, **extra_fields)
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """
-        Custome user for blog app
+    Custome user for blog app
     """
 
     email = models.EmailField(_("email address"), unique=True)
@@ -44,7 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -55,6 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+
 class PaswordReset(models.Model):
     email = models.EmailField()
     token = models.CharField(max_length=100)
@@ -62,4 +67,3 @@ class PaswordReset(models.Model):
 
     def __str__(self):
         return self.email
-    
