@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'accounts',
     'blog',
     'rest_framework',
+    'djoser',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'django_filters',

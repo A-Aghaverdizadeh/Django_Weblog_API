@@ -112,3 +112,22 @@ class ResendActivationEmailSerializer(serializers.Serializer):
 
         attrs['user'] = user_obj
         return super().validate(attrs) 
+    
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+class PasswordResetSerializer(serializers.Serializer):
+    new_password = serializers.CharField(write_only=True)
+    confirm_password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['confirm_password']:
+            raise serializers.ValidationError({"details": "password does't match"})
+        
+        try:
+            validate_password(attrs['confirm_password'])
+        except serializers.ValidationError as e:
+            raise serializers.ValidationError({'confirm_password': list(e.messages)})
+        
+        return attrs
+    
