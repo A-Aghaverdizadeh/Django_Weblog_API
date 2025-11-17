@@ -16,9 +16,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if attrs["password"] != attrs["password1"]:
-            raise serializers.ValidationError(
-                {"details": "password doesn't match"}
-            )
+            raise serializers.ValidationError({"details": "password doesn't match"})
 
         try:
             validate_password(attrs["password"])
@@ -61,9 +59,7 @@ class CustomAuthTokenSerializer(serializers.Serializer):
                 raise serializers.ValidationError(msg, code="authorization")
 
             elif not user.is_verified:
-                raise serializers.ValidationError(
-                    {"details": "user is not verified"}
-                )
+                raise serializers.ValidationError({"details": "user is not verified"})
 
         else:
             msg = _('Must include "username" and "password".')
@@ -89,16 +85,12 @@ class PasswordResetAPISerializer(serializers.Serializer):
 
     def validate(self, attrs):
         if attrs["new_password"] != attrs["new_password1"]:
-            raise serializers.ValidationError(
-                {"details": "password doesn't match"}
-            )
+            raise serializers.ValidationError({"details": "password doesn't match"})
 
         try:
             validate_password(attrs["new_password"])
         except serializers.ValidationError as e:
-            raise serializers.ValidationError(
-                {"new_password": list(e.messages)}
-            )
+            raise serializers.ValidationError({"new_password": list(e.messages)})
 
         return attrs
 
@@ -146,15 +138,11 @@ class PasswordResetSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         if attrs["new_password"] != attrs["confirm_password"]:
-            raise serializers.ValidationError(
-                {"details": "password does't match"}
-            )
+            raise serializers.ValidationError({"details": "password does't match"})
 
         try:
             validate_password(attrs["confirm_password"])
         except serializers.ValidationError as e:
-            raise serializers.ValidationError(
-                {"confirm_password": list(e.messages)}
-            )
+            raise serializers.ValidationError({"confirm_password": list(e.messages)})
 
         return attrs

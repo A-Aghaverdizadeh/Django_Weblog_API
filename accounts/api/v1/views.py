@@ -52,9 +52,7 @@ class RegistrationApiView(GenericAPIView):
             )
             EmailThread(email_obj).run()
             return Response(data, status.HTTP_201_CREATED)
-        return Response(
-            serializer.errors, status=status.HTTP_400_BAD_REQUEST
-        )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_tokens_for_user(self, user):
         refresh = RefreshToken.for_user(user)
@@ -106,9 +104,7 @@ class PasswordRestAPIViewTest(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():
-            if not self.object.check_password(
-                serializer.data.get("old_password")
-            ):
+            if not self.object.check_password(serializer.data.get("old_password")):
                 return Response(
                     {"details": "Wrong Password"},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -161,9 +157,7 @@ class ActivateUserAPIView(APIView):
 
     def get(self, request, token, *args, **kwargs):
         try:
-            Token = jwt.decode(
-                token, settings.SECRET_KEY, algorithms=["HS256"]
-            )
+            Token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
             user_id = Token.get("user_id")
         except ExpiredSignatureError:
             return Response({"details": "the provided token is expired"})

@@ -118,7 +118,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = "static/"
 
-STATICFILES_DIRS = [BASE_DIR / "staticfiles/"]
+# STATICFILES_DIRS = [BASE_DIR / "staticfiles/"]
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = "media/"
@@ -130,6 +130,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # user manager config
 AUTH_USER_MODEL = "accounts.User"
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 # rest_framework settings
 

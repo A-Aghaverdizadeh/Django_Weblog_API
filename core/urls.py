@@ -44,9 +44,7 @@ urlpatterns = [
         schema_view.with_ui("redoc", cache_timeout=0),
         name="schema-redoc",
     ),
-    path(
-        "jwt/create", CustomTokenObtainPairView.as_view(), name="jwt-create"
-    ),
+    path("jwt/create", CustomTokenObtainPairView.as_view(), name="jwt-create"),
     path("jwt/refresh", TokenRefreshView.as_view(), name="jwt-refresh"),
     path("jwt/verify", TokenVerifyView.as_view(), name="jwt-verify"),
 ]
@@ -54,9 +52,5 @@ urlpatterns = [
 # serving static files during development
 
 if settings.DEBUG is True:
-    urlpatterns += static(
-        settings.STATIC_URL, document_root=settings.STATIC_ROOT
-    )
-    urlpatterns += static(
-        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-    )
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

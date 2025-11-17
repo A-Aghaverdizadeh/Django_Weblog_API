@@ -6,9 +6,7 @@ from accounts.models import Profile
 class PostSerializer(serializers.ModelSerializer):
     snippet = serializers.ReadOnlyField(source="get_snippet")
     get_url = serializers.ReadOnlyField(source="get_api_url")
-    absolute_api_url = serializers.SerializerMethodField(
-        method_name="get_abs_api_url"
-    )
+    absolute_api_url = serializers.SerializerMethodField(method_name="get_abs_api_url")
     # category = serializers.StringRelatedField(many=False)
 
     class Meta:

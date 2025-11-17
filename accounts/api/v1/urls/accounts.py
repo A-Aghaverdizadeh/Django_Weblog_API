@@ -11,7 +11,7 @@ urlpatterns = [
     # changepassword
     path(
         "change-password/",
-        views.PasswordRestAPIView.as_view(),
+        views.PasswordRestAPIViewTest.as_view(),
         name="change_password",
     ),
     # resetpassword
