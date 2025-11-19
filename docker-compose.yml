@@ -1,4 +1,16 @@
 services:
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+    command: redis-server --save 60 1 --loglevel warning
+
   backend:
     build: .
     container_name: backend
@@ -28,7 +40,19 @@ services:
       - ServerOptions__Urls=http://*:80
 
       - ServerOptions__HostName=smtp4dev
-
+  master:
+    image: locustio/locust
+    ports:
+     - "8089:8089"
+    volumes:
+      - ./locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --master -H http://backend:8000/
+  
+  worker:
+    image: locustio/locust
+    volumes:
+      - ./locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --worker --master-host master
 
 volumes:
   smtp4dev-data:
