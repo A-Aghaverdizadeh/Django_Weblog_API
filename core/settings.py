@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_filters",
     "mail_templated",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -73,10 +74,21 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": config("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": config("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
+        "USER": config("SQL_USER", "user"),
+        "PASSWORD": config("SQL_PASSWORD", "password"),
+        "HOST": config("SQL_HOST", "localhost"),
+        "PORT": config("SQL_PORT", "5432"),
     }
 }
 
@@ -118,7 +130,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = "static/"
 
-# STATICFILES_DIRS = [BASE_DIR / "staticfiles/"]
+STATICFILES_DIRS = [BASE_DIR / "staticfiles/"]
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = "media/"
@@ -152,3 +164,9 @@ EMAIL_HOST_USER = ""  # SMTP server username
 EMAIL_HOST_PASSWORD = ""  # SMTP server password
 EMAIL_USE_SSL = False  # Set to True if using SSL
 DEFAULT_FROM_EMAIL = "your_email@example.com"  # Default sender email address
+
+# background process
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
+
+# celery task scedule

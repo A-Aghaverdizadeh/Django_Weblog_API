@@ -2,6 +2,7 @@ services:
   redis:
     container_name: redis
     image: redis
+    restart: always
     ports:
       - "6379:6379"
     healthcheck:
@@ -22,6 +23,25 @@ services:
     environment:
       - SECRET_KEY='5c17613ec69a50f03188462628fe14b181b2d41021de2543b07d1506e1321a72'
       - DEBUG=True
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on: 
+      redis:
+        condition: service_healthy
+
+  celery_worker:
+    build: .
+    container_name: celery_worker
+    command: celery -A core worker --loglevel=info
+    volumes:
+      - ./:/app/
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on: 
+      - redis
+      - backend
+
   smtp4dev:
     image: rnwood/smtp4dev:v3
     restart: always
@@ -40,19 +60,21 @@ services:
       - ServerOptions__Urls=http://*:80
 
       - ServerOptions__HostName=smtp4dev
+  
   master:
     image: locustio/locust
     ports:
      - "8089:8089"
     volumes:
-      - ./locust:/mnt/locust
-    command: -f /mnt/locust/locustfile.py --master -H http://backend:8000/
+      - ./locust:/locust
+    command: -f /locust/locustfile.py --master -H http://backend:8000/
   
   worker:
     image: locustio/locust
     volumes:
-      - ./locust:/mnt/locust
-    command: -f /mnt/locust/locustfile.py --worker --master-host master
+      - ./locust:/locust
+    command: -f /locust/locustfile.py --worker --master-host master
 
 volumes:
   smtp4dev-data:
+

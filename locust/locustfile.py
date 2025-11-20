@@ -19,4 +19,3 @@ class QuickstartUser(HttpUser):
     def get_category(self):
         url = "blog/api/v1/category/"
         self.client.get(url)
-
