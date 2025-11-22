@@ -82,16 +82,17 @@ WSGI_APPLICATION = "core.wsgi.application"
 # }
 
 DATABASES = {
-    "default": {
-        "ENGINE": config("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": config("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
-        "USER": config("SQL_USER", "user"),
-        "PASSWORD": config("SQL_PASSWORD", "password"),
-        "HOST": config("SQL_HOST", "localhost"),
-        "PORT": config("SQL_PORT", "5432"),
-    }
-}
-
+     'default': {
+         'ENGINE': 'django.db.backends.{}'.format(
+             config('DATABASE_ENGINE', 'sqlite3')
+         ),
+         'NAME': config('DATABASE_NAME', 'polls'),
+         'USER': config('DATABASE_USERNAME', 'core'),
+         'PASSWORD': config('DATABASE_PASSWORD', 'Aa13311331@'),
+         'HOST': config('DATABASE_HOST', '127.0.0.1'),
+         'PORT': config('DATABASE_PORT', 5432),
+     }
+ }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -111,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -130,7 +130,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = "static/"
 
-STATICFILES_DIRS = [BASE_DIR / "staticfiles/"]
+# STATICFILES_DIRS = [BASE_DIR / "staticfiles/"]
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = "media/"
