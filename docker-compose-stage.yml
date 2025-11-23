@@ -28,7 +28,8 @@ services:
   backend:
     build: .
     container_name: backend
-    entrypoint: /app/entrypoint.sh
+    # entrypoint: /app/entrypoint.sh
+    command: gunicorn core.wsgi --bind 0.0.0.0:8000
     volumes:
       - ./:/app/
       - static-volume:/app/static
