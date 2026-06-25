@@ -21,3 +21,4 @@ python manage.py migrate --noinput
 
 echo "Starting Gunicorn..."
 exec "$@"
+gunicorn core.wsgi
