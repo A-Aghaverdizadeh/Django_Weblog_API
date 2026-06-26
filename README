@@ -131,7 +131,7 @@ docs/
 Example:
 
 ```markdown
-![Dashboard](docs/swagger.png)
+![swagger](docs/swagger.png)
 ```
 
 ---
