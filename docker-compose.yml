@@ -1,7 +1,7 @@
 services:
   redis:
     container_name: redis
-    image: redis
+    image: docker.arvancloud.ir/redis
     restart: always
     ports:
       - "6379:6379"
@@ -15,11 +15,11 @@ services:
   backend:
     build: .
     container_name: backend
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:7000
     volumes:
       - ./:/app/
     ports:
-      - "8000:8000"
+      - "7000:7000"
     environment:
       - SECRET_KEY='5c17613ec69a50f03188462628fe14b181b2d41021de2543b07d1506e1321a72'
       - DEBUG=True
@@ -43,7 +43,7 @@ services:
       - backend
 
   smtp4dev:
-    image: rnwood/smtp4dev:v3
+    image: docker.arvancloud.ir/rnwood/smtp4dev:v3
     restart: always
     ports:
       # Change the number before : to the port the web interface should be accessible on
@@ -62,7 +62,7 @@ services:
       - ServerOptions__HostName=smtp4dev
   
   master:
-    image: locustio/locust
+    image: docker.arvancloud.ir/locustio/locust
     ports:
      - "8089:8089"
     volumes:
@@ -70,7 +70,7 @@ services:
     command: -f /locust/locustfile.py --master -H http://backend:8000/
   
   worker:
-    image: locustio/locust
+    image: docker.arvancloud.ir/locustio/locust
     volumes:
       - ./locust:/locust
     command: -f /locust/locustfile.py --worker --master-host master

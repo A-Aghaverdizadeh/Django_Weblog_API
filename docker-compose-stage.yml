@@ -1,7 +1,7 @@
 services:
   redis:
     container_name: redis
-    image: redis
+    image: docker.arvancloud.ir/redis
     restart: always
     ports:
       - "6379:6379"
@@ -13,7 +13,7 @@ services:
     command: redis-server --save 60 1 --loglevel warning
 
   db:
-    image: postgres:17
+    image: docker.arvancloud.ir/postgres:17
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USERNAME}
@@ -67,7 +67,7 @@ services:
       - backend
 
   nginx:
-    image: nginx
+    image: docker.arvancloud.ir/nginx
     container_name: nginx
     restart: always
     ports:
